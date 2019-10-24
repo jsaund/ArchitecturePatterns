@@ -3,6 +3,7 @@ package com.architecture.patterns
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import com.architecture.patterns.mvc.NewsSourceController
 import com.architecture.patterns.mvphybrid.NewsSourceMVPHybridPresenter
 import com.architecture.patterns.mvphybrid.NewsSourceMVPHybridViewDelegate
 import com.architecture.patterns.mvvm.NewsSourceMVVMViewDelegate
@@ -12,14 +13,18 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var controller: NewsSourceController
 //    private lateinit var presenter: NewsSourcePresenter
 //    private lateinit var viewModel: NewsSourceViewModel
 //    private val disposables = CompositeDisposable()
-    private lateinit var presenterHybrid: NewsSourceMVPHybridPresenter
+//    private lateinit var presenterHybrid: NewsSourceMVPHybridPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        controller = NewsSourceController(this)
+        controller.showNewsSources()
 
 //        presenter = NewsSourcePresenter().apply {
 //            attach(NewsSourceMVPHybridViewDelegate(findViewById(R.id.root)))
@@ -65,14 +70,15 @@ class MainActivity : AppCompatActivity() {
 //                viewDelegate.setListData(data)
 //            })
 
-        presenterHybrid = NewsSourceMVPHybridPresenter()
-        presenterHybrid.attach(NewsSourceMVPHybridViewDelegate(findViewById(R.id.root)))
+//        presenterHybrid = NewsSourceMVPHybridPresenter()
+//        presenterHybrid.attach(NewsSourceMVPHybridViewDelegate(findViewById(R.id.root)))
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        controller.destroy()
 //        presenter.detach()
 //        disposables.clear()
-        presenterHybrid.detach()
+//        presenterHybrid.detach()
     }
 }
